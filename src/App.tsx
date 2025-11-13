@@ -1,22 +1,16 @@
 import { Header } from "@/components/header";
 import ClocksPage from "@/pages/Clocks";
-import { Button } from "@/components/ui/button";
+import CountdownPage from "@/pages/Countdown";
+import { useUrlState } from "@/hooks/useUrlState";
 
 export default function App() {
+  const { page } = useUrlState();
+
   return (
     <main className="flex flex-col gap-3 flex-1 w-screen h-screen p-4 font-mono select-none">
       <Header />
-      <ClocksPage />
-      {/*<Footer />*/}
+      {/* <ClocksPage/> */}
+      {page === "clocks" ? <ClocksPage /> : <CountdownPage />}
     </main>
-  );
-}
-
-function Footer() {
-  return (
-    <span className="flex sm:hidden fixed bottom-4">
-      <Button variant={"link"}>Clocks</Button>
-      <Button variant={"link"}>Countdown</Button>
-    </span>
   );
 }

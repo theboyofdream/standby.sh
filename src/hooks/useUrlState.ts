@@ -10,10 +10,20 @@ export function useUrlState() {
 
   const [hrsFormat, setHrsFormat] = useQueryState<HrsFormat>("hrsFormat", {
     defaultValue: "12",
+    parse: (v) => (v === "12" || v === "24" ? v : "12"),
+    serialize: (v) => v,
   });
 
   const [theme, setTheme] = useQueryState<Theme>("theme", {
     defaultValue: "system",
+    parse: (v) => (["dark", "light", "system"].includes(v) ? (v as Theme) : "system"),
+    serialize: (v) => v,
+  });
+
+  const [page, setPage] = useQueryState<"clocks" | "countdown">("page", {
+    defaultValue: "clocks",
+    parse: (v) => (v === "clocks" || v === "countdown" ? v : "clocks"),
+    serialize: (v) => v,
   });
 
   return {
@@ -23,5 +33,7 @@ export function useUrlState() {
     setHrsFormat,
     theme,
     setTheme,
+    page,
+    setPage,
   };
 }
