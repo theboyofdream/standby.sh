@@ -35,7 +35,7 @@ import * as z from "zod";
 
 export default function ClocksPage() {
   return (
-    <section className="flex flex-col gap-3 flex-1 h-full">
+    <section className="flex flex-col gap-3 flex-1 h-fullt">
       {/*<Combobox
         data={[{ label: "one", value: "one" }]}
         placeholder="Select Timezone"
@@ -94,15 +94,15 @@ function ActiveClock() {
         </div>
       </CardContent>
       <CardFooter className="flex">
-        <div className="w-fit">
-          <span className="text-muted-foreground">Clock Name:&nbsp;</span>
-          <span>{activeClock?.label}</span>
-          <br />
-          <span className="text-muted-foreground">Timezone:&nbsp;</span>
-          <span>{activeClock?.timezone}</span>
-          <br />
-          <span className="text-muted-foreground">UTC Offset:&nbsp;</span>
-          <span>{activeClock && getUtcOffset(activeClock.timezone)}</span>
+        <div className="text-xs min-w-fit grid grid-cols-2">
+          <span className="text-muted-foreground">Clock Name</span>
+          <span>:&nbsp;{activeClock?.label}</span>
+          <span className="text-muted-foreground">Timezone</span>
+          <span>:&nbsp;{activeClock?.timezone}</span>
+          <span className="text-muted-foreground">UTC Offset</span>
+          <span>
+            :&nbsp;{activeClock && getUtcOffset(activeClock.timezone)}
+          </span>
         </div>
         <span className="flex-1"></span>
         <FullScreenButton />
