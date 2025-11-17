@@ -10,12 +10,20 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import {
+  ChartColumnIcon,
+  ChartColumnStackedIcon,
   CheckIcon,
   ChevronDownIcon,
+  CoffeeIcon,
   ExternalLinkIcon,
   GithubIcon,
+  InfoIcon,
+  LayoutGridIcon,
+  Link,
   LinkedinIcon,
   MoonStarIcon,
+  SettingsIcon,
+  Share,
   SunIcon,
   SwatchBookIcon,
   TwitterIcon,
@@ -34,11 +42,18 @@ export function MenuDropdown() {
     <DropdownMenu onOpenChange={() => setIsMenuOpened(!isMenuOpened)}>
       <DropdownMenuTrigger asChild>
         <Button variant={"secondary"} size={"lg"}>
+          {/* <SettingsIcon
+            className={cn(
+              "transition duration-500",
+              isMenuOpened && "rotate-90"
+            )}
+          /> */}
+          <LayoutGridIcon />
           <span>Menu</span>
           <ChevronDownIcon
             className={cn(
               "transition duration-500",
-              isMenuOpened && "rotate-180",
+              isMenuOpened && "rotate-180"
             )}
           />
         </Button>
@@ -50,31 +65,70 @@ export function MenuDropdown() {
           <DropdownMenuLabel>Theme</DropdownMenuLabel>
           <ThemeSwitcherDropdownItems />
           <DropdownMenuSeparator />
+          <DropdownMenuItem disabled>
+            <ChartColumnIcon />
+            <span className="flex-1">View public stats</span>
+            <ExternalLinkIcon className="opacity-50" />
+          </DropdownMenuItem>
+          {/* <DropdownMenuSeparator /> */}
+          <DropdownMenuItem disabled>
+            <CoffeeIcon />
+            <span className="flex-1">Buy me a coffee</span>
+            <ExternalLinkIcon className="opacity-50" />
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuLabel>Social Links</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() =>
-              window.open("https://github.com/theboyofdream", "_blank")
-            }
+            className="hover:bg-transparent!"
+            onClick={(e) => e.preventDefault()}
           >
-            <GithubIcon fill="currentColor" />
-            <span className="flex-1">Github</span>
-            <ExternalLinkIcon />
+            <Button
+              variant={"ghost"}
+              className="hover:bg-accent! hover:text-accent-foreground!"
+              onClick={() =>
+                window.open("https://github.com/theboyofdream", "_blank")
+              }
+            >
+              <GithubIcon fill="currentColor" />
+            </Button>
+            <Button
+              variant={"ghost"}
+              className="hover:bg-accent! hover:text-accent-foreground!"
+              onClick={() =>
+                window.open("https://x.com/theboyofdream", "_blank")
+              }
+            >
+              <TwitterIcon fill="currentColor" />
+            </Button>
+            <Button
+              variant={"ghost"}
+              className="hover:bg-accent! hover:text-accent-foreground!"
+              onClick={() =>
+                window.open(
+                  "https://www.linkedin.com/in/theboyofdream",
+                  "_blank"
+                )
+              }
+            >
+              <LinkedinIcon fill="currentColor" />
+            </Button>
+            <Button
+              variant={"ghost"}
+              className="hover:bg-accent! hover:text-accent-foreground!"
+              onClick={() =>
+                window.open(
+                  "https://www.linkedin.com/in/theboyofdream",
+                  "_blank"
+                )
+              }
+            >
+              <LinkBreak />
+            </Button>
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => window.open("https://x.com/theboyofdream", "_blank")}
-          >
-            <TwitterIcon fill="currentColor" />
-            <span className="flex-1">X (formally Twitter)</span>
-            <ExternalLinkIcon />
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() =>
-              window.open("https://www.linkedin.com/in/theboyofdream", "_blank")
-            }
-          >
-            <LinkedinIcon fill="currentColor" />
-            <span className="flex-1">LinkedIn</span>
-            <ExternalLinkIcon />
+          <DropdownMenuSeparator />
+            <DropdownMenuItem disabled>
+            <InfoIcon />
+            <span className="flex-1">Open source credits</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
