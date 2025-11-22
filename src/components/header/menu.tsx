@@ -31,6 +31,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useClockConfig } from "@/hooks/useClockConfig";
 import { useTheme } from "@/hooks/useTheme";
+import { SwatchesIcon } from "../icons";
 
 export function MenuDropdown() {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
@@ -48,7 +49,7 @@ export function MenuDropdown() {
               isMenuOpened && "rotate-90"
             )}
           /> */}
-          <LayoutGridIcon />
+          {/* <LayoutGridIcon /> */}
           <span>Menu</span>
           <ChevronDownIcon
             className={cn(
@@ -89,7 +90,7 @@ export function MenuDropdown() {
                 window.open("https://github.com/theboyofdream", "_blank")
               }
             >
-              <GithubIcon fill="currentColor" />
+              <GithubIcon fill="currentColor" strokeWidth={0} />
             </Button>
             <Button
               variant={"ghost"}
@@ -98,7 +99,7 @@ export function MenuDropdown() {
                 window.open("https://x.com/theboyofdream", "_blank")
               }
             >
-              <TwitterIcon fill="currentColor" />
+              <TwitterIcon fill="currentColor" strokeWidth={0} />
             </Button>
             <Button
               variant={"ghost"}
@@ -110,24 +111,11 @@ export function MenuDropdown() {
                 )
               }
             >
-              <LinkedinIcon fill="currentColor" />
-            </Button>
-            <Button
-              variant={"ghost"}
-              className="hover:bg-accent! hover:text-accent-foreground!"
-              onClick={() =>
-                window.open(
-                  "https://www.linkedin.com/in/theboyofdream",
-                  "_blank"
-                )
-              }
-            >
-              <LinkBreak />
+              <LinkedinIcon fill="currentColor" strokeWidth={0} />
             </Button>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
             <DropdownMenuItem disabled>
-            <InfoIcon />
             <span className="flex-1">Open source credits</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -159,17 +147,17 @@ function ThemeSwitcherDropdownItems() {
   return (
     <>
       <DropdownMenuItem onClick={() => setTheme("system")}>
-        <SwatchBookIcon />
+        <SwatchBookIcon fill="currentColor" strokeWidth={0} fillRule="evenodd" />
         <span className="flex-1">System</span>
         {theme === "system" && <CheckIcon />}
       </DropdownMenuItem>
       <DropdownMenuItem onClick={() => setTheme("light")}>
-        <SunIcon />
+        <SunIcon fill="currentColor" />
         <span className="flex-1">Light</span>
         {theme === "light" && <CheckIcon />}
       </DropdownMenuItem>
       <DropdownMenuItem onClick={() => setTheme("dark")}>
-        <MoonStarIcon />
+        <MoonStarIcon fill="currentColor" />
         <span className="flex-1">Dark</span>
         {theme === "dark" && <CheckIcon />}
       </DropdownMenuItem>

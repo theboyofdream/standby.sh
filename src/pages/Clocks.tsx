@@ -21,7 +21,14 @@ import { Input } from "@/components/ui/input";
 import { useClockConfig } from "@/hooks/useClockConfig";
 import { useClocks } from "@/hooks/useClocks";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckIcon, PencilIcon, PlusIcon, TrashIcon } from "lucide-react";
+import {
+  CheckIcon,
+  MaximizeIcon,
+  MinimizeIcon,
+  PencilIcon,
+  PlusIcon,
+  TrashIcon,
+} from "lucide-react";
 import {
   forwardRef,
   useEffect,
@@ -47,6 +54,8 @@ export default function ClocksPage() {
 }
 
 function ActiveClock() {
+  const activeClockRef = useRef(null);
+  const { toggle, isFullscreen, isSupported } = useFullscreen(activeClockRef);
   const { showSecs, hrsFormat } = useClockConfig();
   const { clocks, activeClockId } = useClocks();
   const [currentTime, setCurrentTime] = useState<string>("");
@@ -74,7 +83,11 @@ function ActiveClock() {
   const [hours, minutes, secondsWithAMPM] = currentTime.split(":");
   const [seconds, ampm] = secondsWithAMPM?.split(" ") || [secondsWithAMPM, ""];
   return (
-    <Card className="bg-accent dark:bg-card h-full" id="clock">
+    <Card
+      className="bg-accent dark:bg-card h-full"
+      id="clock"
+      ref={activeClockRef}
+    >
       <CardContent className="flex flex-1 items-center justify-center w-full text-[15vw]">
         <div className="flex w-fit max-h-fit items-start justify-center">
           <span>{hours}</span>
@@ -94,7 +107,12 @@ function ActiveClock() {
         </div>
       </CardContent>
       <CardFooter className="flex">
-        <div className="text-xs min-w-fit grid grid-cols-2">
+        <div
+          className={cn(
+            "text-xs min-w-fit grid grid-cols-2",
+            isFullscreen && "opacity-0"
+          )}
+        >
           <span className="text-muted-foreground">Clock Name</span>
           <span>:&nbsp;{activeClock?.label}</span>
           <span className="text-muted-foreground">Timezone</span>
@@ -105,7 +123,9 @@ function ActiveClock() {
           </span>
         </div>
         <span className="flex-1"></span>
-        <FullScreenButton />
+        <Button variant="ghost" onClick={() => toggle()}>
+          {isFullscreen ? <MinimizeIcon /> : <MaximizeIcon />}
+        </Button>
       </CardFooter>
     </Card>
   );
@@ -124,7 +144,7 @@ function Clocks() {
         >
           <CardContent>
             <div className="flex justify-between">
-              <p className="text-xl">{clock.label}</p>
+              <p className="text-xl h-6">{clock.label}</p>
               {clock.id === activeClockId && <CheckIcon className="size-4" />}
             </div>
             <p className="text-muted-foreground">{clock.timezone}</p>
@@ -143,7 +163,9 @@ function Clocks() {
                 className="hover:text-primary!"
                 onClick={() => addClockRef.current?.open(clock.id)}
               >
-                <PencilIcon></PencilIcon>
+                <PencilIcon fill="currentColor" strokeWidth={2}
+                className="stroke-accent"
+                ></PencilIcon>
               </Button>
               <Button
                 variant={"ghost"}
@@ -151,7 +173,8 @@ function Clocks() {
                 className="hover:text-destructive!"
                 onClick={() => removeClock(clock.id)}
               >
-                <TrashIcon></TrashIcon>
+                <TrashIcon
+                ></TrashIcon>
               </Button>
             </div>
           </CardFooter>
@@ -178,6 +201,8 @@ function Clocks() {
 }
 
 import TIMEZONES from "@/constants/timezone-utcs.json";
+import { useFullscreen } from "@/hooks/use-fullscreen";
+import { cn } from "@/lib/utils";
 
 type clockFormRef = {
   open: (id?: string) => void;
