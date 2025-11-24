@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useFullscreen } from "@/hooks/use-fullscreen";
 
 export function FullScreenButton() {
-  const { } = useFullscreen()
+  const { isFullscreen, toggle: toggleFullscreen} = useFullscreen()
   // const [isFullscreen, setIsFullscreen] = useState(false);
 
   // const toggleFullscreen = () => {
@@ -38,7 +38,7 @@ export function FullScreenButton() {
   // };
 
   return (
-    <Button variant="ghost" onClick={toggleFullscreen}>
+    <Button variant="ghost" onClick={()=>toggleFullscreen()}>
       {isFullscreen ? <MinimizeIcon /> : <MaximizeIcon />}
     </Button>
   );

@@ -1,6 +1,6 @@
 import { Header } from "@/components/header";
-import ClocksPage from "@/pages/Clocks";
-import CountdownPage from "@/pages/Countdown";
+import ClockPage from "@/pages/clock-page";
+import CountdownPage from "@/pages/countdown-page";
 import { useUrlState } from "@/hooks/useUrlState";
 
 export default function App() {
@@ -10,7 +10,7 @@ export default function App() {
     <main className="flex flex-col gap-3 flex-1 w-screen h-screen p-4 font-mono select-none">
       <Header />
       {/* <ClocksPage/> */}
-      {page === "clocks" ? <ClocksPage /> : <CountdownPage />}
+      {page === "clocks" ? <ClockPage /> : <CountdownPage />}
     </main>
   );
 }

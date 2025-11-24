@@ -40,7 +40,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 
-export default function ClocksPage() {
+export default function ClockPage() {
   return (
     <section className="flex flex-col gap-3 flex-1 h-fullt">
       {/*<Combobox
@@ -135,7 +135,7 @@ function Clocks() {
   const { clocks, setActiveClock, activeClockId, removeClock } = useClocks();
   const addClockRef = useRef<clockFormRef | null>(null);
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+    <div className="max-h-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
       {clocks.map((clock) => (
         <Card
           key={clock.id}

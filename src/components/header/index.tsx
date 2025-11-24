@@ -1,37 +1,25 @@
-import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { MenuDropdown } from "./menu";
-import { useUrlState } from "@/hooks/useUrlState";
+import { Link } from "react-router";
 
 export function Header() {
-  const { page, setPage } = useUrlState();
-
   return (
     <header className="flex justify-between items-center gap-1">
-      <Button variant={"ghost"} onClick={() => setPage("clocks")}>
-        standby.sh
-      </Button>
+      <Link to={"/"}>
+        <Button variant={"ghost"} size={"sm"}>standby.sh</Button>
+      </Link>
+      <span className="flex-1"></span>
       <span className="hidden sm:flex">
-        <Button
-          variant={"ghost"}
-          className={cn(
-            "hover:opacity-100",
-            page === "clocks" ? "opacity-100" : "opacity-50"
-          )}
-          onClick={() => setPage("clocks")}
-        >
-          Clocks
-        </Button>
-        <Button
-          variant={"ghost"}
-          className={cn(
-            "hover:opacity-100",
-            page === "countdown" ? "opacity-100" : "opacity-50"
-          )}
-          onClick={() => setPage("countdown")}
-        >
-          Countdown
-        </Button>
+        <Link to={"/clock"}>
+          <Button variant={"ghost"} size={"sm"}>
+            Clocks
+          </Button>
+        </Link>
+        <Link to={"/countdown"}>
+          <Button variant={"ghost"} size={"sm"}>
+            Countdown
+          </Button>
+        </Link>
       </span>
       <MenuDropdown />
     </header>

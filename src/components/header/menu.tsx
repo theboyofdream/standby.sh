@@ -42,7 +42,7 @@ export function MenuDropdown() {
   return (
     <DropdownMenu onOpenChange={() => setIsMenuOpened(!isMenuOpened)}>
       <DropdownMenuTrigger asChild>
-        <Button variant={"secondary"} size={"lg"}>
+        <Button variant={"secondary"} size={"sm"} className="pl-3.5!">
           {/* <SettingsIcon
             className={cn(
               "transition duration-500",
