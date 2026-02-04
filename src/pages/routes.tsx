@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import LandingPage from "./landing-page";
-import ClockPage from "./clock-page";
-import CountdownPage from "./countdown-page";
+import ClockPage from "./clocks";
+import CountdownPage from "./timers";
 import { Header } from "@/components/header";
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/clock" element={<ClockPage />} />
+          <Route path="/clocks" element={<ClockPage />} />
           <Route path="/countdown" element={<CountdownPage />} />
         </Routes>
       </BrowserRouter>

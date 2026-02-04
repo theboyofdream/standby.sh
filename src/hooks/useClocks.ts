@@ -30,10 +30,10 @@ export const useClocks = create<ClocksState>()(
       activeClockId: "1",
 
       addClock: (timezone, label) => {
-        if (get().clocks.length >= 4) {
-          toast.error("You can add maximum upto 4 clocks.");
-          return;
-        }
+        // if (get().clocks.length >= 4) {
+        //   toast.error("You can add maximum upto 4 clocks.");
+        //   return;
+        // }
         set((state) => ({
           clocks: [
             ...state.clocks,

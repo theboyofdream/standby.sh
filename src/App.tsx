@@ -1,6 +1,6 @@
 import { Header } from "@/components/header";
-import ClockPage from "@/pages/clock-page";
-import CountdownPage from "@/pages/countdown-page";
+import ClockPage from "@/pages/clocks";
+import CountdownPage from "@/pages/timers";
 import { useUrlState } from "@/hooks/useUrlState";
 
 export default function App() {

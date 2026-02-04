@@ -18,7 +18,7 @@ export interface UseFullscreenReturn {
 }
 
 export function useFullscreen(
-  targetRef?: React.RefObject<Element>,
+  targetRef: React.RefObject<Element> | null = null,
   options: UseFullscreenOptions = {}
 ): UseFullscreenReturn {
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -110,7 +110,7 @@ export function useFullscreen(
       }
 
       const target =
-        elementToFullscreen || targetRef?.current || document.documentElement;
+        elementToFullscreen || targetRef?.current || document.documentElement as Element;
 
       if (!target) {
         throw new Error("No element provided for fullscreen");
