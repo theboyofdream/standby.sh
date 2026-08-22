@@ -22,7 +22,7 @@ export function Header() {
   const currentUrl = useLocation().pathname;
   return (
     <header className="flex justify-between items-center gap-1">
-      <Link to={"/clocks"}>
+      <Link to={"/"}>
         <Button variant={"ghost"} size={"sm"}>
           standby.sh
         </Button>

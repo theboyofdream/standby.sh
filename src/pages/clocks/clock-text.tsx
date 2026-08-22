@@ -44,7 +44,7 @@ export function ClockText({ timezone }: ClockTextProps) {
         </>
       )}
       {hrsFormat === "12" && (
-        <span className="ml-[0.15em] text-[0.45em] sm:text-[0.3em] opacity-60 dark:opacity-30">
+        <span className="ml-[0.3em] text-[0.45em] sm:text-[0.3em] opacity-60 dark:opacity-30">
           {ampm}
         </span>
       )}
