@@ -54,11 +54,11 @@ export const CountdownForm = forwardRef<countdownFormRef>((_, ref) => {
   function onSubmit(data: z.infer<typeof countdownFormSchema>) {
     const hours = Number(data.hours);
     const minutes = Number(data.minutes);
-    
+
     // Calculate target date from hours and minutes from now
     const now = new Date();
     const targetDate = new Date(now.getTime() + (hours * 60 * 60 * 1000) + (minutes * 60 * 1000));
-    
+
     if (targetDate <= now) {
       countdownForm.setError("hours", {
         message: "Please enter a valid countdown time.",
@@ -67,19 +67,15 @@ export const CountdownForm = forwardRef<countdownFormRef>((_, ref) => {
     }
 
     if (editingId) {
-      console.log("Updating countdown:", editingId, data);
       updateCountdown(editingId, data.label, targetDate, hours, minutes);
       setEditingId(null);
     } else {
-      console.log("Adding countdown:", data);
       const existingCountdown = countdowns.find(
         (c) => c.label === data.label
       );
       if (existingCountdown) {
-        console.log("Updating existing countdown:", existingCountdown.id);
         updateCountdown(existingCountdown.id, data.label, targetDate, hours, minutes);
       } else {
-        console.log("Creating new countdown");
         addCountdown(data.label, targetDate, hours, minutes);
       }
     }
@@ -88,11 +84,9 @@ export const CountdownForm = forwardRef<countdownFormRef>((_, ref) => {
 
   useImperativeHandle(ref, () => ({
     open(id) {
-      console.log("CountdownForm.open called with id:", id);
       setEditingId(id ?? null);
       if (id) {
         const countdown = countdowns.find((c) => c.id === id);
-        console.log("Found countdown for edit:", countdown);
         if (countdown) {
           countdownForm.setValue("label", countdown.label);
           // use stored initial hours/minutes (what user originally entered)
@@ -114,7 +108,7 @@ export const CountdownForm = forwardRef<countdownFormRef>((_, ref) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogOverlay className="backdrop-blur-xs"></DialogOverlay>
-      <DialogContent className="w-sm">
+      <DialogContent className="w-sm max-w-[calc(100vw-2rem)]">
         <DialogHeader>
           <DialogTitle>Countdown Form</DialogTitle>
           <DialogDescription>
@@ -145,6 +139,33 @@ export const CountdownForm = forwardRef<countdownFormRef>((_, ref) => {
                 </Field>
               )}
             />
+            <div className="grid gap-3">
+              <span className="text-sm font-medium">Select Countdown Duration</span>
+              <div className="grid grid-cols-4 gap-3">
+                {
+                  [5, 10, 25, 60].map((minutes) => (
+                    <Button
+                      key={minutes}
+                      type="button"
+                      variant="outline"
+                      className="h-auto py-1.5 flex-col gap-0"
+                      onClick={() => countdownForm.setValue("minutes", String(minutes), { shouldValidate: true })}
+                    >
+                      <span className="text-lg font-semibold">{minutes}</span>
+                      <span className="text-xs text-muted-foreground">mins</span>
+                    </Button>
+                  ))
+                }
+              </div>
+              {/* <span className="cursor-pointer p-4 py-2 bg-accent/50 hover:bg-accent rounded-lg border">
+                Custom
+              </span> */}
+            </div>
+            <div className="flex items-center justify-center">
+              <span className="w-full h-px bg-border"></span>
+              <span className="px-4">or</span>
+              <span className="w-full h-px bg-border"></span>
+            </div>
             <div className="flex gap-3">
               <Controller
                 name="hours"

@@ -39,7 +39,7 @@ export default function ClockPage() {
 
 
     return (
-        <section className="flex flex-col gap-3 flex-1 h-fullt">
+        <section className="flex flex-col gap-3 flex-1 min-h-0 overflow-x-hidden">
             {/* Active clock */}
 
             <Card className="bg-accent dark:bg-card h-full group" ref={ref}>
@@ -69,7 +69,7 @@ export default function ClockPage() {
                     <div
                         className={cn(
                             "text-xs min-w-fit grid grid-cols-[auto_1fr] gap-x-1 opacity-0 transition-opacity duration-500",
-                            !isFullscreen && "group-hover:opacity-100"
+                            !isFullscreen && "group-hover:opacity-100 max-sm:opacity-100"
                         )}
                     >
                         {Object.entries(activeClockDetails).map(([key, value]) => (
@@ -85,7 +85,8 @@ export default function ClockPage() {
                     <span
                         className={cn(
                             "opacity-0 transition-opacity duration-500",
-                            !isFullscreen && activeClock && "group-hover:opacity-100"
+                            !isFullscreen && activeClock &&
+                              "group-hover:opacity-100 max-sm:opacity-100"
                         )}
                     >
                         <EditIconButton onClick={() => addClockFormRef.current?.open(activeClock?.id)} />

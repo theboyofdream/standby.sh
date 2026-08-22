@@ -1,5 +1,4 @@
 // stores/useClocksStore.ts
-import { toast } from "sonner";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -19,7 +18,7 @@ type ClocksState = {
 
 export const useClocks = create<ClocksState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       clocks: [
         {
           id: "1",

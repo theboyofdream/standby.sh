@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,38 +6,42 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import {
-  ChartColumnIcon,
-  ChartColumnStackedIcon,
+  ALargeSmallIcon,
   CheckIcon,
   ChevronDownIcon,
-  CoffeeIcon,
-  ExternalLinkIcon,
+  FileDownIcon,
   GithubIcon,
-  InfoIcon,
-  LayoutGridIcon,
-  Link,
   LinkedinIcon,
   MoonStarIcon,
-  SettingsIcon,
-  Share,
   SunIcon,
   SwatchBookIcon,
   TwitterIcon,
+  FileUpIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useClockConfig } from "@/hooks/useClockConfig";
+import {
+  FONT_SCALES,
+  useClockConfig,
+  type FontScale,
+} from "@/hooks/useClockConfig";
+import { exportData, importData } from "@/lib/backup";
 import { useTheme } from "@/hooks/useTheme";
-import { SwatchesIcon } from "../icons";
 
 export function MenuDropdown() {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
+  const importInputRef = useRef<HTMLInputElement>(null);
   const { theme, setTheme } = useTheme();
   useEffect(() => {
+    // re-apply persisted theme class on mount (persist doesn't run the side effect)
     setTheme(theme);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <DropdownMenu onOpenChange={() => setIsMenuOpened(!isMenuOpened)}>
@@ -62,25 +66,62 @@ export function MenuDropdown() {
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuGroup>
           <ClockConfigDropdownItems />
+          <FontScaleSubDropdown />
           <DropdownMenuSeparator />
           <DropdownMenuLabel>Theme</DropdownMenuLabel>
           <ThemeSwitcherDropdownItems />
-          <DropdownMenuSeparator />
-          <DropdownMenuItem disabled>
+          {/*<DropdownMenuSeparator />*/}
+          {/* <DropdownMenuItem disabled>
             <ChartColumnIcon />
             <span className="flex-1">View public stats</span>
             <ExternalLinkIcon className="opacity-50" />
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           {/* <DropdownMenuSeparator /> */}
-          <DropdownMenuItem disabled>
+          {/* <DropdownMenuItem disabled>
             <CoffeeIcon />
             <span className="flex-1">Buy me a coffee</span>
             <ExternalLinkIcon className="opacity-50" />
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuSeparator />
-          <DropdownMenuLabel>Social Links</DropdownMenuLabel>
           <DropdownMenuItem
-            className="hover:bg-transparent!"
+            className="hover:bg-transparent! p-0 flex"
+            onClick={(e) => e.preventDefault()}
+          >
+            <Button
+              variant={"ghost"}
+              title="Export data (JSON)"
+              className="hover:bg-accent! hover:text-accent-foreground! flex flex-1 justify-center"
+              onClick={() => exportData()}
+            >
+              <FileDownIcon />
+              <span>Export</span>
+            </Button>
+            <Button
+              variant={"ghost"}
+              title="Import data (JSON)"
+              className="hover:bg-accent! hover:text-accent-foreground! flex flex-1 justify-center"
+              onClick={() => importInputRef.current?.click()}
+            >
+              {/*<UploadIcon />*/}
+              <FileUpIcon />
+              <span>Import</span>
+            </Button>
+          </DropdownMenuItem>
+          <input
+            ref={importInputRef}
+            type="file"
+            accept="application/json,.json"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) importData(file);
+              e.target.value = "";
+            }}
+          />
+          <DropdownMenuSeparator />
+          {/* <DropdownMenuLabel>Social Links</DropdownMenuLabel> */}
+          <DropdownMenuItem
+            className="hover:bg-transparent! p-0"
             onClick={(e) => e.preventDefault()}
           >
             <Button
@@ -114,10 +155,10 @@ export function MenuDropdown() {
               <LinkedinIcon fill="currentColor" strokeWidth={0} />
             </Button>
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
+          {/*<DropdownMenuSeparator />
             <DropdownMenuItem disabled>
             <span className="flex-1">Open source credits</span>
-          </DropdownMenuItem>
+          </DropdownMenuItem>*/}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -139,6 +180,26 @@ function ClockConfigDropdownItems() {
         {hrsFormat === "24" && <CheckIcon />}
       </DropdownMenuItem>
     </>
+  );
+}
+
+function FontScaleSubDropdown() {
+  const { fontScale, setFontScale } = useClockConfig();
+  return (
+    <DropdownMenuSub>
+      <DropdownMenuSubTrigger>
+        <ALargeSmallIcon />
+        <span className="flex-1">Font size</span>
+      </DropdownMenuSubTrigger>
+      <DropdownMenuSubContent sideOffset={8} className="ml-2">
+        {(Object.keys(FONT_SCALES) as FontScale[]).map((scale) => (
+          <DropdownMenuItem key={scale} onClick={() => setFontScale(scale)}>
+            <span className="flex-1">{FONT_SCALES[scale].label}</span>
+            {fontScale === scale && <CheckIcon />}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuSubContent>
+    </DropdownMenuSub>
   );
 }
 

@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@opencode-ai/browser-control": "^0.4.0",
     "@react-router/dev": "^7.9.6",
     "@types/node": "^24.10.0",
     "@types/react": "^19.1.16",

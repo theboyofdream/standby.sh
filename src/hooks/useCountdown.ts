@@ -42,6 +42,8 @@ export const useCountdown = create<CountdownState>()(
           isPaused: true,
           initialHours,
           initialMinutes,
+          // freeze display at full duration until first start
+          remainingMs: (initialHours * 60 + initialMinutes) * 60 * 1000,
         };
         set((state) => ({
           countdowns: [...state.countdowns, newCountdown],
@@ -142,7 +144,12 @@ export const useCountdown = create<CountdownState>()(
           return {
             countdowns: state.countdowns.map((c) =>
               c.id === id
-                ? { ...c, targetDate: newTargetDate, isPaused: true, remainingMs: undefined }
+                ? {
+                    ...c,
+                    targetDate: newTargetDate,
+                    isPaused: true,
+                    remainingMs: (c.initialHours * 60 + c.initialMinutes) * 60 * 1000,
+                  }
                 : c
             ),
           };

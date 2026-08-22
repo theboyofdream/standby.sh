@@ -62,7 +62,7 @@ export const ClockForm = forwardRef<clockFormRef>((_, ref) => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogOverlay className="backdrop-blur-xs"></DialogOverlay>
-            <DialogContent className="w-sm">
+            <DialogContent className="w-sm max-w-[calc(100vw-2rem)]">
                 <DialogHeader>
                     <DialogTitle>Timezone Form</DialogTitle>
                     <DialogDescription>

@@ -34,7 +34,7 @@ export function MiniClock({ id, label, timezone, isActive, onClick, onEdit, onDe
                 <span className="flex-1 text-muted-foreground">
                     {getUtcOffset(timezone)}
                 </span>
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="opacity-0 group-hover:opacity-100 max-sm:opacity-100 transition-opacity duration-300">
                     <EditIconButton onClick={() => onEdit(id)} />
                     <DeleteIconButton onClick={() => onDelete(id)} />
                 </div>

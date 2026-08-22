@@ -8,6 +8,25 @@ export interface UseFullscreenOptions {
   onError?: (error: Error) => void;
 }
 
+// vendor-prefixed fullscreen API (older Safari/Firefox/IE)
+type VendorDocument = Document & {
+  webkitFullscreenEnabled?: boolean;
+  mozFullScreenEnabled?: boolean;
+  msFullscreenEnabled?: boolean;
+  webkitFullscreenElement?: Element | null;
+  mozFullScreenElement?: Element | null;
+  msFullscreenElement?: Element | null;
+  webkitExitFullscreen?: () => Promise<void> | void;
+  mozCancelFullScreen?: () => Promise<void> | void;
+  msExitFullscreen?: () => Promise<void> | void;
+};
+
+type VendorElement = Element & {
+  webkitRequestFullscreen?: () => Promise<void> | void;
+  mozRequestFullScreen?: () => Promise<void> | void;
+  msRequestFullscreen?: () => Promise<void> | void;
+};
+
 export interface UseFullscreenReturn {
   isFullscreen: boolean;
   isSupported: boolean;
@@ -33,9 +52,9 @@ export function useFullscreen(
   // Check if fullscreen is supported
   const isSupported = Boolean(
     document.fullscreenEnabled ||
-      (document as any).webkitFullscreenEnabled ||
-      (document as any).mozFullScreenEnabled ||
-      (document as any).msFullscreenEnabled
+      (document as VendorDocument).webkitFullscreenEnabled ||
+      (document as VendorDocument).mozFullScreenEnabled ||
+      (document as VendorDocument).msFullscreenEnabled
   );
 
   // Handle fullscreen change events
@@ -43,13 +62,13 @@ export function useFullscreen(
     const handleFullscreenChange = () => {
       const fullscreenElement =
         document.fullscreenElement ||
-        (document as any).webkitFullscreenElement ||
-        (document as any).mozFullScreenElement ||
-        (document as any).msFullscreenElement;
+        (document as VendorDocument).webkitFullscreenElement ||
+        (document as VendorDocument).mozFullScreenElement ||
+        (document as VendorDocument).msFullscreenElement;
 
       const isCurrentlyFullscreen = Boolean(fullscreenElement);
       setIsFullscreen(isCurrentlyFullscreen);
-      setElement(fullscreenElement);
+      setElement(fullscreenElement ?? null);
 
       if (isCurrentlyFullscreen) {
         optionsRef.current.onEnter?.();
@@ -117,14 +136,15 @@ export function useFullscreen(
       }
 
       try {
+        const vendorTarget = target as VendorElement;
         if (target.requestFullscreen) {
           await target.requestFullscreen();
-        } else if ((target as any).webkitRequestFullscreen) {
-          await (target as any).webkitRequestFullscreen();
-        } else if ((target as any).mozRequestFullScreen) {
-          await (target as any).mozRequestFullScreen();
-        } else if ((target as any).msRequestFullscreen) {
-          await (target as any).msRequestFullscreen();
+        } else if (vendorTarget.webkitRequestFullscreen) {
+          await vendorTarget.webkitRequestFullscreen();
+        } else if (vendorTarget.mozRequestFullScreen) {
+          await vendorTarget.mozRequestFullScreen();
+        } else if (vendorTarget.msRequestFullscreen) {
+          await vendorTarget.msRequestFullscreen();
         } else {
           throw new Error("Fullscreen API is not supported");
         }
@@ -142,14 +162,15 @@ export function useFullscreen(
     }
 
     try {
+      const vendorDoc = document as VendorDocument;
       if (document.exitFullscreen) {
         await document.exitFullscreen();
-      } else if ((document as any).webkitExitFullscreen) {
-        await (document as any).webkitExitFullscreen();
-      } else if ((document as any).mozCancelFullScreen) {
-        await (document as any).mozCancelFullScreen();
-      } else if ((document as any).msExitFullscreen) {
-        await (document as any).msExitFullscreen();
+      } else if (vendorDoc.webkitExitFullscreen) {
+        await vendorDoc.webkitExitFullscreen();
+      } else if (vendorDoc.mozCancelFullScreen) {
+        await vendorDoc.mozCancelFullScreen();
+      } else if (vendorDoc.msExitFullscreen) {
+        await vendorDoc.msExitFullscreen();
       } else {
         throw new Error("Fullscreen API is not supported");
       }

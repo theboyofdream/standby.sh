@@ -1,8 +1,10 @@
-import { MaximizeIcon, MinimizeIcon, PauseIcon, PencilIcon, PlayIcon, RefreshCwIcon, RotateCcwIcon, TrashIcon } from "lucide-react";
+import { MaximizeIcon, MinimizeIcon, PauseIcon, PencilIcon, PlayIcon, RotateCcwIcon, TrashIcon } from "lucide-react";
 import { Button } from "./ui/button";
 
+type IconButtonClick = React.MouseEventHandler<HTMLButtonElement>;
+
 interface EditIconButtonProps {
-    onClick: () => void;
+    onClick: IconButtonClick;
 }
 export function EditIconButton({ onClick }: EditIconButtonProps) {
     return (
@@ -22,7 +24,7 @@ export function EditIconButton({ onClick }: EditIconButtonProps) {
 }
 
 interface DeleteIconButtonProps {
-    onClick: () => void;
+    onClick: IconButtonClick;
 }
 export function DeleteIconButton({ onClick }: DeleteIconButtonProps) {
     return (

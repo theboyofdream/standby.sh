@@ -29,7 +29,7 @@ export function Header() {
       </Link>
       <span className="hidden sm:flex">
         {ROUTES.map(({ url, label }) => (
-          <Link to={url}>
+          <Link key={url} to={url}>
             <Button
               variant={"ghost"}
               size={"sm"}

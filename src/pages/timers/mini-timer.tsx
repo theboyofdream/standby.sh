@@ -50,7 +50,7 @@ export function MiniCountdown({
                 </p>
             </CardContent>
             <CardFooter className="flex items-center justify-end">
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-0.5">
+                <div className="opacity-0 group-hover:opacity-100 max-sm:opacity-100 transition-opacity duration-300 flex gap-0.5">
                     <PlayPauseIconButton 
                         onClick={() => {
                             // always make it active and toggle - this ensures all others are paused

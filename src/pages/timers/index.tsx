@@ -10,9 +10,10 @@ import { CountdownText } from "@/pages/timers/timer-text";
 import { MiniCountdown } from "@/pages/timers/mini-timer";
 import { PlusIcon } from "lucide-react";
 import { Fragment, useRef } from "react";
+import { toast } from "sonner";
 
 export default function CountdownPage() {
-    const { countdowns, activeCountdownId, setActiveCountdown, removeCountdown, toggleCountdown, resetCountdown } = useCountdown();
+    const { countdowns, activeCountdownId, setActiveCountdown, removeCountdown, toggleCountdown, resetCountdown, markCountdownExpired } = useCountdown();
     const ref = useRef<HTMLDivElement>(null);
     const countdownFormRef = useRef<countdownFormRef | null>(null);
     const { isFullscreen, toggle } = useFullscreen(
@@ -40,7 +41,10 @@ export default function CountdownPage() {
                             "flex flex-1 items-center justify-center w-full text-[15vw]",
                             "not-dark:text-current/80"
                         )} >
-                            <CountdownText targetDate={activeCountdown.targetDate} isRunning={!activeCountdown.isPaused} remainingMs={activeCountdown.remainingMs} />
+                            <CountdownText targetDate={activeCountdown.targetDate} isRunning={!activeCountdown.isPaused} remainingMs={activeCountdown.remainingMs} onExpire={() => {
+                                markCountdownExpired(activeCountdown.id);
+                                toast(`${activeCountdown.label} countdown finished`);
+                            }} />
                         </CardContent> :
                         <CardContent className="flex flex-1 flex-col items-center justify-center w-full text-center">
                             <p className="text-3xl font-medium">No countdown selected</p>
@@ -60,7 +64,7 @@ export default function CountdownPage() {
                     <div
                         className={cn(
                             "text-xs min-w-fit grid grid-cols-[auto_1fr] gap-x-1 opacity-0 transition-opacity duration-500",
-                            !isFullscreen && "group-hover:opacity-100"
+                            !isFullscreen && "group-hover:opacity-100 max-sm:opacity-100"
                         )}
                     >
                         {Object.entries(activeCountdownDetails).map(([key, value]) => (
@@ -75,14 +79,14 @@ export default function CountdownPage() {
                     <span className="flex-1"></span>
                     <span className={cn(
                         "opacity-0 transition-opacity duration-500",
-                        !isFullscreen && activeCountdown && "group-hover:opacity-100"
+                        !isFullscreen && activeCountdown && "group-hover:opacity-100 max-sm:opacity-100"
                     )}>
                         <PlayPauseIconButton
                             isPaused={activeCountdown?.isPaused || false}
-                            onClick={() => ref.current && toggle(ref.current)}
+                            onClick={() => activeCountdown && toggleCountdown(activeCountdown.id)}
                         />
-                        <ResetIconButton onClick={() => ref.current && toggle(ref.current)} />
-                        <EditIconButton onClick={() => ref.current && toggle(ref.current)} />
+                        <ResetIconButton onClick={() => activeCountdown && resetCountdown(activeCountdown.id)} />
+                        <EditIconButton onClick={() => activeCountdown && countdownFormRef.current?.open(activeCountdown.id)} />
                     </span>
                     <FullScreenIconButton
                         isFullscreen={isFullscreen}
